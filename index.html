@@ -237,6 +237,7 @@ footer{
   <div class="badges">
     <span class="badge">Apex</span>
     <span class="badge">LWC</span>
+    <span class="badge">Aura Components</span>
     <span class="badge">REST APIs</span>
     <span class="badge">CI/CD</span>
     <span class="badge">Agentforce</span>
@@ -280,7 +281,7 @@ footer{
   <div class="section-title">Projects</div>
   <div class="projects-grid">
 
-    <div class="project-card" onclick="this.classList.toggle('expanded')">
+    <div class="project-card">
       <h3>Setup Automation via Workbook & AI</h3>
       <div class="tech">Apex · LWC · REST · LLM · Metadata API · SheetJS</div>
       <div class="summary">AI-powered Salesforce org configuration from spreadsheets.</div>
@@ -291,7 +292,7 @@ footer{
       <div class="expand-hint">[ click to expand ]</div>
     </div>
 
-    <div class="project-card" onclick="this.classList.toggle('expanded')">
+    <div class="project-card">
       <h3>Order Form Generator</h3>
       <div class="tech">Apex · LWC · Aura · REST · JavaScript</div>
       <div class="summary">Multi-format document generation for Salesforce orders.</div>
@@ -302,7 +303,7 @@ footer{
       <div class="expand-hint">[ click to expand ]</div>
     </div>
 
-    <div class="project-card" onclick="this.classList.toggle('expanded')">
+    <div class="project-card">
       <h3>SaaS Catalog</h3>
       <div class="tech">LWC · Apex · Aura · JSON</div>
       <div class="summary">Self-service quoting for recurring SaaS products.</div>
@@ -313,7 +314,7 @@ footer{
       <div class="expand-hint">[ click to expand ]</div>
     </div>
 
-    <div class="project-card" onclick="this.classList.toggle('expanded')">
+    <div class="project-card">
       <h3>Spirent Communications</h3>
       <div class="tech">Apex · Triggers · LWC · VF Pages · Email Services</div>
       <div class="summary">Automated order doc generation with email delivery.</div>
@@ -323,7 +324,7 @@ footer{
       <div class="expand-hint">[ click to expand ]</div>
     </div>
 
-    <div class="project-card" onclick="this.classList.toggle('expanded')">
+    <div class="project-card">
       <h3>ForPharma App</h3>
       <div class="tech">React · Node.js · Heroku · PostgreSQL · Salesforce</div>
       <div class="summary">Full-stack pharma ops app integrated with Salesforce.</div>
@@ -344,15 +345,14 @@ footer{
   <div class="skills-container">
     <span class="skill-tag primary">Apex</span>
     <span class="skill-tag primary">LWC</span>
-    <span class="skill-tag primary">Aura</span>
+    <span class="skill-tag primary">Aura Components</span>
     <span class="skill-tag">Visualforce</span>
     <span class="skill-tag">SOQL</span>
     <span class="skill-tag">SOSL</span>
     <span class="skill-tag">REST APIs</span>
     <span class="skill-tag">Flows</span>
     <span class="skill-tag">Triggers</span>
-    <span class="skill-tag">Batch Apex</span>
-    <span class="skill-tag">Queueable</span>
+    <span class="skill-tag">Asynchronous Apex</span>
     <span class="skill-tag">Agentforce</span>
     <span class="skill-tag">Deployments</span>
     <span class="skill-tag">Packaging</span>
@@ -362,6 +362,7 @@ footer{
   <div class="skills-container">
     <span class="skill-tag">Git</span>
     <span class="skill-tag">CI/CD</span>
+    <span class="skill-tag">Copado</span>
     <span class="skill-tag">SFDX CLI</span>
     <span class="skill-tag">Change Sets</span>
     <span class="skill-tag">Sandbox Mgmt</span>
@@ -418,6 +419,11 @@ document.querySelectorAll('.project-card').forEach((card,i)=>{
   card.style.opacity='0';
   card.style.transform='translateY(20px)';
   card.style.transition=`all 0.5s ease-out ${i*0.1}s`;
+  card.addEventListener('click',function(){
+    this.classList.toggle('expanded');
+    const hint=this.querySelector('.expand-hint');
+    hint.textContent=this.classList.contains('expanded')?'[ click to close ]':'[ click to expand ]';
+  });
   const obs=new IntersectionObserver(([e])=>{
     if(e.isIntersecting){
       card.style.opacity='1';card.style.transform='translateY(0)';
