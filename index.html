@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Surya Prakash Akula — Salesforce Developer</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0a0a0f;
+  --surface:#12121a;
+  --card:#1a1a26;
+  --border:#2a2a3a;
+  --text:#e0e0e8;
+  --muted:#8888a0;
+  --accent:#6c63ff;
+  --accent2:#00d4aa;
+  --glow:rgba(108,99,255,0.15);
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Space Grotesk',sans-serif;
+  background:var(--bg);color:var(--text);
+  line-height:1.6;overflow-x:hidden;
+}
+a{color:var(--accent);text-decoration:none}
+a:hover{color:var(--accent2)}
+
+/* === CURSOR GLOW === */
+.cursor-glow{
+  position:fixed;width:300px;height:300px;
+  border-radius:50%;pointer-events:none;z-index:0;
+  background:radial-gradient(circle,var(--glow) 0%,transparent 70%);
+  transform:translate(-50%,-50%);transition:opacity 0.3s;opacity:0;
+}
+body:hover .cursor-glow{opacity:1}
+
+/* === HERO === */
+.hero{
+  min-height:100vh;display:flex;flex-direction:column;
+  justify-content:center;align-items:center;text-align:center;
+  padding:2rem;position:relative;
+}
+.hero::before{
+  content:'';position:absolute;top:0;left:0;right:0;bottom:0;
+  background:radial-gradient(ellipse at 50% 30%,rgba(108,99,255,0.08) 0%,transparent 60%);
+  pointer-events:none;
+}
+.hero h1{
+  font-size:clamp(2.5rem,6vw,4.5rem);font-weight:700;
+  letter-spacing:-0.03em;margin-bottom:0.5rem;
+  background:linear-gradient(135deg,var(--text) 0%,var(--accent) 50%,var(--accent2) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+  animation:fadeUp 0.8s ease-out;
+}
+.hero .tagline{
+  font-size:1.1rem;color:var(--muted);margin-bottom:2rem;
+  font-family:'JetBrains Mono',monospace;font-size:0.9rem;
+  animation:fadeUp 0.8s ease-out 0.2s both;
+}
+.hero .badges{
+  display:flex;flex-wrap:wrap;gap:0.5rem;justify-content:center;
+  animation:fadeUp 0.8s ease-out 0.4s both;
+}
+.badge{
+  padding:0.4rem 0.9rem;border-radius:100px;font-size:0.8rem;
+  font-weight:500;border:1px solid var(--border);background:var(--surface);
+  transition:all 0.3s;
+}
+.badge:hover{border-color:var(--accent);box-shadow:0 0 20px var(--glow)}
+.badge.highlight{border-color:var(--accent2);color:var(--accent2)}
+
+.scroll-hint{
+  position:absolute;bottom:2rem;
+  animation:bounce 2s infinite;color:var(--muted);font-size:0.8rem;
+  font-family:'JetBrains Mono',monospace;
+}
+
+/* === NAV === */
+nav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(10,10,15,0.85);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);padding:0.8rem 2rem;
+  display:flex;justify-content:center;gap:2rem;
+}
+nav a{
+  color:var(--muted);font-size:0.85rem;font-weight:500;
+  transition:color 0.3s;font-family:'JetBrains Mono',monospace;
+}
+nav a:hover{color:var(--accent2)}
+
+/* === SECTIONS === */
+section{max-width:900px;margin:0 auto;padding:4rem 2rem}
+.section-title{
+  font-size:0.75rem;text-transform:uppercase;letter-spacing:0.2em;
+  color:var(--accent);font-family:'JetBrains Mono',monospace;
+  margin-bottom:2rem;display:flex;align-items:center;gap:1rem;
+}
+.section-title::after{
+  content:'';flex:1;height:1px;background:var(--border);
+}
+
+/* === EXPERIENCE TIMELINE === */
+.timeline{position:relative;padding-left:2rem}
+.timeline::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;
+  width:2px;background:linear-gradient(to bottom,var(--accent),var(--accent2));
+}
+.timeline-item{
+  position:relative;margin-bottom:2.5rem;
+  padding-left:1.5rem;
+  opacity:0;transform:translateX(-20px);
+  transition:all 0.6s ease-out;
+}
+.timeline-item.visible{opacity:1;transform:translateX(0)}
+.timeline-item::before{
+  content:'';position:absolute;left:-2.35rem;top:0.5rem;
+  width:10px;height:10px;border-radius:50%;
+  background:var(--accent);border:2px solid var(--bg);
+  box-shadow:0 0 10px var(--glow);
+}
+.timeline-item h3{font-size:1.1rem;font-weight:600;margin-bottom:0.2rem}
+.timeline-item .meta{
+  font-size:0.8rem;color:var(--muted);
+  font-family:'JetBrains Mono',monospace;margin-bottom:0.5rem;
+}
+.timeline-item p{font-size:0.9rem;color:var(--muted);line-height:1.7}
+
+/* === PROJECT CARDS === */
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem}
+.project-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:12px;padding:1.5rem;cursor:pointer;
+  transition:all 0.4s;position:relative;overflow:hidden;
+}
+.project-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  transform:scaleX(0);transform-origin:left;transition:transform 0.4s;
+}
+.project-card:hover{
+  border-color:var(--accent);transform:translateY(-4px);
+  box-shadow:0 8px 30px rgba(0,0,0,0.3);
+}
+.project-card:hover::before{transform:scaleX(1)}
+.project-card h3{font-size:1rem;font-weight:600;margin-bottom:0.3rem}
+.project-card .tech{
+  font-size:0.75rem;color:var(--accent2);
+  font-family:'JetBrains Mono',monospace;margin-bottom:0.8rem;
+}
+.project-card .summary{font-size:0.85rem;color:var(--muted);margin-bottom:1rem}
+.project-card .details{
+  max-height:0;overflow:hidden;transition:max-height 0.5s ease;
+  font-size:0.85rem;color:var(--text);line-height:1.8;
+}
+.project-card.expanded .details{max-height:500px}
+.project-card .expand-hint{
+  font-size:0.7rem;color:var(--muted);
+  font-family:'JetBrains Mono',monospace;
+  transition:color 0.3s;
+}
+.project-card:hover .expand-hint{color:var(--accent)}
+.project-card .link{
+  display:inline-block;margin-top:0.8rem;font-size:0.8rem;
+  color:var(--accent);font-family:'JetBrains Mono',monospace;
+}
+
+/* === SKILLS === */
+.skills-container{display:flex;flex-wrap:wrap;gap:0.5rem}
+.skill-tag{
+  padding:0.4rem 0.8rem;border-radius:8px;font-size:0.8rem;
+  background:var(--surface);border:1px solid var(--border);
+  transition:all 0.3s;cursor:default;
+}
+.skill-tag:hover{
+  border-color:var(--accent);background:var(--card);
+  box-shadow:0 0 15px var(--glow);transform:scale(1.05);
+}
+.skill-tag.primary{border-color:var(--accent);color:var(--accent)}
+.skill-category{
+  font-size:0.8rem;color:var(--accent2);margin:1.5rem 0 0.8rem;
+  font-family:'JetBrains Mono',monospace;
+}
+.skill-category:first-child{margin-top:0}
+
+/* === CONTACT === */
+.contact-links{display:flex;flex-wrap:wrap;gap:1rem;margin-top:1rem}
+.contact-link{
+  padding:0.6rem 1.2rem;border-radius:8px;font-size:0.85rem;
+  border:1px solid var(--border);background:var(--surface);
+  transition:all 0.3s;display:flex;align-items:center;gap:0.5rem;
+}
+.contact-link:hover{
+  border-color:var(--accent2);color:var(--accent2);
+  box-shadow:0 0 20px rgba(0,212,170,0.1);
+}
+
+/* === FOOTER === */
+footer{
+  text-align:center;padding:3rem 2rem;
+  font-size:0.75rem;color:var(--muted);
+  font-family:'JetBrains Mono',monospace;
+  border-top:1px solid var(--border);
+}
+
+/* === ANIMATIONS === */
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(30px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes bounce{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(8px)}
+}
+.fade-in{opacity:0;transform:translateY(20px);transition:all 0.6s ease-out}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+
+/* === MOBILE === */
+@media(max-width:600px){
+  .projects-grid{grid-template-columns:1fr}
+  nav{gap:1rem;padding:0.6rem 1rem}
+  nav a{font-size:0.75rem}
+  section{padding:3rem 1.2rem}
+}
+</style>
+</head>
+<body>
+
+<div class="cursor-glow" id="glow"></div>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <h1>Surya Prakash Akula</h1>
+  <p class="tagline">salesforce developer · pd1 certified · 2x appexchange published</p>
+  <div class="badges">
+    <span class="badge highlight">Hackathon Winner</span>
+    <span class="badge">Apex</span>
+    <span class="badge">LWC</span>
+    <span class="badge">REST APIs</span>
+    <span class="badge">CI/CD</span>
+    <span class="badge">Agentforce</span>
+    <span class="badge">Full Stack</span>
+  </div>
+  <div class="scroll-hint">↓ scroll to explore</div>
+</section>
+
+<!-- NAV -->
+<nav>
+  <a href="#experience">experience</a>
+  <a href="#projects">projects</a>
+  <a href="#skills">skills</a>
+  <a href="#contact">contact</a>
+</nav>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-title">Experience</div>
+  <div class="timeline">
+    <div class="timeline-item">
+      <h3>Salesforce Developer (Admin & Dev)</h3>
+      <div class="meta">ForsysInc · Hyderabad · Jun 2022 – Nov 2024</div>
+      <p>Built and shipped AppExchange solutions, handled production deployments across sandbox environments, performed admin tasks, integrated third-party tools via REST, and trained 2 batches of junior developers on Apex, LWC, Aura, and core platform concepts.</p>
+    </div>
+    <div class="timeline-item">
+      <h3>Software Engineer Intern</h3>
+      <div class="meta">Meebuddy · Nov 2020 – May 2021</div>
+      <p>Full-stack Android app with Ionic, Angular, Node.js, and MongoDB.</p>
+    </div>
+    <div class="timeline-item">
+      <h3>Independent Security Researcher</h3>
+      <div class="meta">HackerOne · Apr 2020 – Nov 2020</div>
+      <p>Reported vulnerabilities to public and private bug bounty programs including Crunchyroll and Facebook.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-title">Projects</div>
+  <div class="projects-grid">
+
+    <div class="project-card" onclick="this.classList.toggle('expanded')">
+      <h3>Setup Automation via Workbook & AI</h3>
+      <div class="tech">Apex · LWC · REST · LLM · Metadata API · SheetJS</div>
+      <div class="summary">AI-powered Salesforce org configuration from spreadsheets.</div>
+      <div class="details">
+        Upload an Excel workbook with setup requirements → system reads it and uses Metadata API to auto-create objects, fields, permission sets, layouts, triggers, and classes. Added an LLM layer for natural language prompts. Works with any Salesforce or Conga system.<br><br>
+        <strong style="color:var(--accent2)">🏆 Hackathon Winner 2024</strong>
+      </div>
+      <div class="expand-hint">[ click to expand ]</div>
+    </div>
+
+    <div class="project-card" onclick="this.classList.toggle('expanded')">
+      <h3>Order Form Generator</h3>
+      <div class="tech">Apex · LWC · Aura · REST · JavaScript</div>
+      <div class="summary">Multi-format document generation for Salesforce orders.</div>
+      <div class="details">
+        One-click order document generation supporting PDF, DOCX, and Excel. Sales reps pick a format, system pulls line items, pricing, and terms, and generates the doc instantly. Handles governor limits for large documents.<br><br>
+        <a class="link" href="https://appexchange.salesforce.com/appxListingDetail?listingId=a0N4V00000KlfvcUAB" target="_blank">→ View on AppExchange</a>
+      </div>
+      <div class="expand-hint">[ click to expand ]</div>
+    </div>
+
+    <div class="project-card" onclick="this.classList.toggle('expanded')">
+      <h3>SaaS Catalog</h3>
+      <div class="tech">LWC · Apex · Aura · JSON</div>
+      <div class="summary">Self-service quoting for recurring SaaS products.</div>
+      <div class="details">
+        Catalog-enabled quoting with one-time, recurring, and usage pricing. Calculates ARR, MRR, TCV with discount impact. Partners and customers can self-serve quotes without a sales rep.<br><br>
+        <a class="link" href="https://appexchange.salesforce.com/appxListingDetail?listingId=a0N3u00000R8KTCEA3" target="_blank">→ View on AppExchange</a>
+      </div>
+      <div class="expand-hint">[ click to expand ]</div>
+    </div>
+
+    <div class="project-card" onclick="this.classList.toggle('expanded')">
+      <h3>Spirent Communications</h3>
+      <div class="tech">Apex · Triggers · LWC · VF Pages · Email Services</div>
+      <div class="summary">Automated order doc generation with email delivery.</div>
+      <div class="details">
+        Auto-generates PDF and emails it to the customer when a sales rep closes an order. Built both automated (trigger-based) and on-demand flows. Different product types use different document templates.
+      </div>
+      <div class="expand-hint">[ click to expand ]</div>
+    </div>
+
+    <div class="project-card" onclick="this.classList.toggle('expanded')">
+      <h3>ForPharma App</h3>
+      <div class="tech">React · Node.js · Heroku · PostgreSQL · Salesforce</div>
+      <div class="summary">Full-stack pharma ops app integrated with Salesforce.</div>
+      <div class="details">
+        Built a full-stack application for pharmaceutical operations deployed on Heroku. Node.js + PostgreSQL backend, React frontend, integrated with Salesforce for real-time data sync and sales management workflows.
+      </div>
+      <div class="expand-hint">[ click to expand ]</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-title">Skills</div>
+
+  <div class="skill-category">// salesforce</div>
+  <div class="skills-container">
+    <span class="skill-tag primary">Apex</span>
+    <span class="skill-tag primary">LWC</span>
+    <span class="skill-tag primary">Aura</span>
+    <span class="skill-tag">Visualforce</span>
+    <span class="skill-tag">SOQL</span>
+    <span class="skill-tag">SOSL</span>
+    <span class="skill-tag">REST APIs</span>
+    <span class="skill-tag">Flows</span>
+    <span class="skill-tag">Triggers</span>
+    <span class="skill-tag">Batch Apex</span>
+    <span class="skill-tag">Queueable</span>
+    <span class="skill-tag">Agentforce</span>
+    <span class="skill-tag">Deployments</span>
+    <span class="skill-tag">Packaging</span>
+  </div>
+
+  <div class="skill-category">// devops</div>
+  <div class="skills-container">
+    <span class="skill-tag">Git</span>
+    <span class="skill-tag">CI/CD</span>
+    <span class="skill-tag">SFDX CLI</span>
+    <span class="skill-tag">Change Sets</span>
+    <span class="skill-tag">Sandbox Mgmt</span>
+    <span class="skill-tag">SFDC Scanner</span>
+  </div>
+
+  <div class="skill-category">// full stack</div>
+  <div class="skills-container">
+    <span class="skill-tag">JavaScript</span>
+    <span class="skill-tag">TypeScript</span>
+    <span class="skill-tag">Node.js</span>
+    <span class="skill-tag">React</span>
+    <span class="skill-tag">Angular</span>
+    <span class="skill-tag">Rust</span>
+    <span class="skill-tag">Next.js</span>
+    <span class="skill-tag">PostgreSQL</span>
+    <span class="skill-tag">MySQL</span>
+    <span class="skill-tag">MongoDB</span>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-title">Get in Touch</div>
+  <p style="color:var(--muted);margin-bottom:1rem">PD1 Certified · B.Tech CS (CGPA 8.5) · RGUKT IIIT Nuzvid '22</p>
+  <div class="contact-links">
+    <a class="contact-link" href="mailto:0xsury4@gmail.com">✉ 0xsury4@gmail.com</a>
+    <a class="contact-link" href="tel:+919553499659">☎ +91 9553499659</a>
+    <a class="contact-link" href="#">⚡ Hyderabad, IN</a>
+  </div>
+</section>
+
+<footer>built with caffeine and curiosity · surya prakash akula · 2026</footer>
+
+<script>
+// Cursor glow
+const glow=document.getElementById('glow');
+document.addEventListener('mousemove',e=>{
+  glow.style.left=e.clientX+'px';
+  glow.style.top=e.clientY+'px';
+});
+
+// Scroll animations
+const observer=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){e.target.classList.add('visible')}
+  });
+},{threshold:0.1});
+
+document.querySelectorAll('.timeline-item, .fade-in').forEach(el=>observer.observe(el));
+
+// Stagger project cards
+document.querySelectorAll('.project-card').forEach((card,i)=>{
+  card.style.opacity='0';
+  card.style.transform='translateY(20px)';
+  card.style.transition=`all 0.5s ease-out ${i*0.1}s`;
+  const obs=new IntersectionObserver(([e])=>{
+    if(e.isIntersecting){
+      card.style.opacity='1';card.style.transform='translateY(0)';
+    }
+  },{threshold:0.1});
+  obs.observe(card);
+});
+
+// Smooth nav active state
+const sections=document.querySelectorAll('section[id]');
+window.addEventListener('scroll',()=>{
+  const y=window.scrollY+100;
+  sections.forEach(s=>{
+    const top=s.offsetTop,h=s.offsetHeight,id=s.id;
+    const link=document.querySelector(`nav a[href="#${id}"]`);
+    if(link){
+      if(y>=top&&y<top+h){link.style.color='var(--accent2)'}
+      else{link.style.color='var(--muted)'}
+    }
+  });
+});
+</script>
+</body>
+</html>
