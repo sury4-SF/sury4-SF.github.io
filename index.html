@@ -164,9 +164,44 @@ footer{text-align:center;padding:2.5rem;font-family:'JetBrains Mono',monospace;
   .brow{flex-direction:column}
   .tl-item{padding-left:1.2rem}
 }
+
+/* INTRO OVERLAY */
+.intro{position:fixed;inset:0;z-index:999;background:var(--bg);display:flex;
+  flex-direction:column;justify-content:center;align-items:center;text-align:center;
+  padding:2rem;transition:opacity .6s ease,visibility .6s ease}
+.intro.gone{opacity:0;visibility:hidden;pointer-events:none}
+.intro-line{font-family:'JetBrains Mono',monospace;font-size:clamp(.8rem,2vw,1rem);
+  color:var(--dim);opacity:0;transform:translateY(10px);line-height:1.8}
+.intro-line.show{opacity:1;transform:translateY(0);transition:all .5s ease}
+.intro-line span{color:var(--cyan)}
+.intro-line em{color:var(--blue);font-style:normal;font-weight:600}
+.intro-skip{position:absolute;bottom:2rem;font-family:'JetBrains Mono',monospace;
+  font-size:.65rem;color:rgba(110,110,133,.4);cursor:pointer;transition:color .3s}
+.intro-skip:hover{color:var(--dim)}
+
+/* VIEW COUNTER */
+.views{position:fixed;bottom:1.2rem;right:1.5rem;z-index:50;
+  font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--dim);
+  opacity:.4;display:flex;align-items:center;gap:.4rem;transition:opacity .3s}
+.views:hover{opacity:.8}
+.views-dot{width:5px;height:5px;border-radius:50%;background:var(--cyan);
+  animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
+
+/* FOOTER TAGLINE */
+.footer-tag{font-size:.7rem;color:rgba(110,110,133,.5);margin-top:.5rem;font-style:italic}
+
 </style>
 </head>
 <body>
+
+<div class="intro" id="intro">
+
+  <div class="intro-line" id="il3">welcome to <span>Surya's</span> corner of salesforce.</div>
+  <div class="intro-skip" onclick="document.getElementById('intro').classList.add('gone')">skip →</div>
+</div>
+<div class="views" id="viewCounter"><div class="views-dot"></div><span id="vc">...</span> views</div>
+
 <div class="glow" id="glow"></div>
 
 <section class="hero">
@@ -180,8 +215,8 @@ footer{text-align:center;padding:2.5rem;font-family:'JetBrains Mono',monospace;
     <span class="pill">Full Stack</span>
   </div>
   <div class="contact-row">
-    <a href="mailto:0xsury4@gmail.com">0xsury4@gmail.com</a>
-    <a href="tel:+919553499659">+91 9553499659</a>
+    <a href="mailto:d4r3d3v1l.asp@gmail.com">d4r3d3v1l.asp@gmail.com</a>
+    <a href="tel:++919032853173">+91 919032853173</a>
     <span style="color:var(--dim);opacity:.5">hyderabad</span>
   </div>
   <div class="scroll-down">↓ scroll</div>
@@ -234,7 +269,7 @@ footer{text-align:center;padding:2.5rem;font-family:'JetBrains Mono',monospace;
 <section id="skill">
   <div class="stitle"><div class="sdot"></div><span>Skills</span></div>
   <div class="scard appear">
-    <div class="sgroup"><div class="slabel">salesforce</div><div class="swrap"><span class="stag">Apex</span><span class="stag">LWC</span><span class="stag">Aura</span><span class="stag">Visualforce</span><span class="stag">SOQL</span><span class="stag">SOSL</span><span class="stag">REST APIs</span><span class="stag">Flows</span><span class="stag">Triggers</span><span class="stag">Async Apex</span><span class="stag">Agentforce</span><span class="stag">Deployments</span><span class="stag">Packaging</span></div></div>
+    <div class="sgroup"><div class="slabel">salesforce</div><div class="swrap"><span class="stag">Apex</span><span class="stag">LWC</span><span class="stag">Aura</span><span class="stag">Visualforce</span><span class="stag">SOQL</span><span class="stag">SOSL</span><span class="stag">REST APIs</span><span class="stag">Flows</span><span class="stag">Triggers</span><span class="stag">Async Apex</span><span class="stag">Salesforce CPQ</span><span class="stag">Conga CPQ</span><span class="stag">Callback APIs</span><span class="stag">Agentforce</span><span class="stag">Deployments</span><span class="stag">Packaging</span></div></div>
     <div class="sgroup"><div class="slabel">devops</div><div class="swrap"><span class="stag">Git</span><span class="stag">CI/CD</span><span class="stag">Copado</span><span class="stag">SFDX CLI</span><span class="stag">Change Sets</span><span class="stag">Sandbox Mgmt</span><span class="stag">SFDC Scanner</span></div></div>
     <div class="sgroup"><div class="slabel">full stack</div><div class="swrap"><span class="stag">JavaScript</span><span class="stag">TypeScript</span><span class="stag">Node.js</span><span class="stag">React</span><span class="stag">Angular</span><span class="stag">Rust</span><span class="stag">Next.js</span><span class="stag">PostgreSQL</span><span class="stag">MySQL</span><span class="stag">MongoDB</span></div></div>
   </div>
@@ -248,7 +283,7 @@ footer{text-align:center;padding:2.5rem;font-family:'JetBrains Mono',monospace;
   </div>
 </section>
 
-<footer>built with caffeine and curiosity · surya prakash akula · 2026</footer>
+<footer>surya prakash akula · 2026<div class="footer-tag">"built with caffeine and claude :)"</div></footer>
 
 <script>
 const g=document.getElementById('glow');
@@ -272,6 +307,22 @@ window.addEventListener('scroll',()=>{
   ss.forEach(s=>{const l=document.querySelector('nav a[href="#'+s.id+'"]');
     if(l){l.classList.toggle('on',y>=s.offsetTop&&y<s.offsetTop+s.offsetHeight)}});
 });
+
+// Intro sequence
+setTimeout(()=>{document.getElementById('il1').classList.add('show')},300);
+setTimeout(()=>{document.getElementById('il2').classList.add('show')},1200);
+setTimeout(()=>{document.getElementById('il3').classList.add('show')},2100);
+setTimeout(()=>{document.getElementById('intro').classList.add('gone')},4200);
+
+// View counter
+(async()=>{
+  try{
+    const r=await fetch('https://api.counterapi.dev/v1/sury4-sf-portfolio/views/up');
+    const d=await r.json();
+    document.getElementById('vc').textContent=d.count||'—';
+  }catch(e){document.getElementById('viewCounter').style.display='none'}
+})();
+
 </script>
 </body>
 </html>
