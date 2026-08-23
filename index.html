@@ -18,7 +18,6 @@ body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:var(--tex
 a{color:var(--blue);text-decoration:none}a:hover{color:var(--cyan)}
 ::selection{background:rgba(77,142,255,0.25)}
 
-/* GLOW */
 .glow{position:fixed;width:400px;height:400px;border-radius:50%;pointer-events:none;z-index:0;
   background:radial-gradient(circle,var(--glow),transparent 70%);
   transform:translate(-50%,-50%);opacity:0;transition:opacity .4s}
@@ -29,38 +28,28 @@ body:hover .glow{opacity:1}
   align-items:center;text-align:center;padding:2rem;position:relative}
 .hero::after{content:'';position:absolute;bottom:0;left:10%;right:10%;height:1px;
   background:linear-gradient(90deg,transparent,var(--border),transparent)}
-
 .avatar{width:90px;height:90px;border-radius:50%;
   background:linear-gradient(135deg,#1a1a2e,#2a2a44);
   border:2px solid rgba(77,142,255,0.2);display:flex;align-items:center;
   justify-content:center;font-size:2rem;font-weight:700;margin-bottom:2rem;
-  box-shadow:0 0 40px rgba(77,142,255,0.06);
-  animation:float 6s ease-in-out infinite}
-
+  box-shadow:0 0 40px rgba(77,142,255,0.06);animation:float 6s ease-in-out infinite}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-
 .hero h1{font-size:clamp(2.4rem,5.5vw,4rem);font-weight:700;letter-spacing:-.03em;
   opacity:0;animation:reveal .8s ease forwards}
 .hero h1 span{background:linear-gradient(135deg,var(--text),var(--blue),var(--cyan));
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-
 .tagline{font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--dim);
   margin-top:.6rem;opacity:0;animation:reveal .8s ease .2s forwards}
-
 .pills{display:flex;flex-wrap:wrap;gap:.45rem;justify-content:center;
   margin-top:1.8rem;opacity:0;animation:reveal .8s ease .4s forwards}
 .pill{padding:.3rem .7rem;border-radius:100px;font-size:.75rem;font-weight:500;
-  background:rgba(77,142,255,0.06);border:1px solid var(--border);color:var(--dim);
-  transition:all .3s}
+  background:rgba(77,142,255,0.06);border:1px solid var(--border);color:var(--dim);transition:all .3s}
 .pill:hover{border-color:var(--blue);color:var(--blue);box-shadow:0 0 16px var(--glow)}
 .pill.gold{color:#e8c56d;border-color:rgba(232,197,109,0.25);background:rgba(232,197,109,0.06)}
-
 .contact-row{display:flex;flex-wrap:wrap;gap:1.2rem;justify-content:center;
   margin-top:2rem;font-family:'JetBrains Mono',monospace;font-size:.78rem;
   opacity:0;animation:reveal .8s ease .55s forwards}
-.contact-row a{color:var(--dim)}
-.contact-row a:hover{color:var(--cyan)}
-
+.contact-row a{color:var(--dim)}.contact-row a:hover{color:var(--cyan)}
 .scroll-down{position:absolute;bottom:1.8rem;font-family:'JetBrains Mono',monospace;
   font-size:.7rem;color:var(--dim);opacity:0;animation:reveal .8s ease .7s forwards,drift 2.5s ease-in-out infinite}
 @keyframes drift{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
@@ -84,7 +73,7 @@ section{max-width:900px;margin:0 auto;padding:4rem 2rem}
   letter-spacing:.15em;color:var(--blue);font-weight:500}
 .stitle::after{content:'';flex:1;height:1px;background:var(--border)}
 
-/* EXPERIENCE - TIMELINE */
+/* TIMELINE */
 .timeline{position:relative;padding-left:1.8rem}
 .timeline::before{content:'';position:absolute;left:3px;top:8px;bottom:8px;width:1px;
   background:linear-gradient(to bottom,var(--blue),var(--cyan),transparent)}
@@ -100,12 +89,13 @@ section{max-width:900px;margin:0 auto;padding:4rem 2rem}
   font-size:.72rem;font-weight:500;background:rgba(0,224,184,0.08);color:var(--cyan);
   border:1px solid rgba(0,224,184,0.15)}
 
-/* PROJECTS */
-.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:.8rem}
+/* PROJECT CARDS */
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:.8rem;align-items:start}
 .pcard{background:var(--card);border:1px solid var(--border);border-radius:var(--r);
-  overflow:hidden;cursor:pointer;transition:all .35s}
+  overflow:hidden;cursor:pointer;transition:border-color .3s, transform .3s, box-shadow .3s}
 .pcard:hover{border-color:var(--border-h);transform:translateY(-3px);
   box-shadow:0 8px 28px rgba(0,0,0,.3)}
+.pcard.open{transform:translateY(0);box-shadow:0 4px 20px rgba(0,0,0,.2)}
 .pbar{height:3px}
 .pbar.b{background:linear-gradient(90deg,var(--blue),#7ab8ff)}
 .pbar.g{background:linear-gradient(90deg,#2e844a,#45b26b)}
@@ -117,16 +107,17 @@ section{max-width:900px;margin:0 auto;padding:4rem 2rem}
 .pt{padding:.12rem .45rem;border-radius:4px;font-size:.65rem;font-weight:500;
   background:rgba(77,142,255,0.08);color:var(--blue)}
 .psummary{padding:0 1rem .55rem;font-size:.8rem;color:var(--dim)}
-.pdetails{max-height:0;overflow:hidden;transition:max-height .45s ease;
-  padding:0 1rem;font-size:.8rem;color:var(--dim);line-height:1.7}
-.pcard.open .pdetails{max-height:300px;padding-bottom:.8rem}
+.pdetails-wrap{overflow:hidden;height:0;transition:height .4s cubic-bezier(.4,0,.2,1)}
+.pdetails{padding:0 1rem;font-size:.8rem;color:var(--dim);line-height:1.7}
+.pdetails-pad{padding-bottom:.8rem}
 .pfoot{padding:.45rem 1rem;border-top:1px solid var(--border);display:flex;justify-content:flex-end}
-.pfoot .tog{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--blue);font-weight:500}
+.pfoot .tog{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--blue);
+  font-weight:500;transition:color .2s}
+.pcard:hover .tog{color:var(--cyan)}
 
 /* SKILLS */
 .scard{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1.3rem}
-.sgroup{margin-bottom:1.2rem}
-.sgroup:last-child{margin-bottom:0}
+.sgroup{margin-bottom:1.2rem}.sgroup:last-child{margin-bottom:0}
 .slabel{font-family:'JetBrains Mono',monospace;font-size:.65rem;text-transform:uppercase;
   letter-spacing:.1em;color:var(--blue);font-weight:500;margin-bottom:.5rem}
 .swrap{display:flex;flex-wrap:wrap;gap:.35rem}
@@ -134,7 +125,6 @@ section{max-width:900px;margin:0 auto;padding:4rem 2rem}
   background:var(--surface);color:var(--dim);border:1px solid var(--border);transition:all .25s}
 .stag:hover{border-color:var(--blue);color:var(--blue);transform:translateY(-2px);
   box-shadow:0 4px 10px rgba(77,142,255,0.08)}
-.stag.hi{background:rgba(77,142,255,0.08);color:var(--blue);border-color:rgba(77,142,255,0.2);font-weight:600}
 
 /* BOTTOM */
 .brow{display:flex;flex-wrap:wrap;gap:.8rem}
@@ -144,15 +134,35 @@ section{max-width:900px;margin:0 auto;padding:4rem 2rem}
 .bicon{width:42px;height:42px;border-radius:50%;
   background:linear-gradient(135deg,var(--blue),#1a3a6e);
   display:flex;align-items:center;justify-content:center;
-  font-weight:800;font-size:1rem;flex-shrink:0;
-  box-shadow:0 0 12px rgba(77,142,255,0.1)}
+  font-weight:800;font-size:1rem;flex-shrink:0;box-shadow:0 0 12px rgba(77,142,255,0.1)}
 .bcard h4{font-size:.88rem;font-weight:600}
 .bcard p{font-size:.72rem;color:var(--dim)}
 
 footer{text-align:center;padding:2.5rem;font-family:'JetBrains Mono',monospace;
   font-size:.65rem;color:rgba(110,110,133,0.4);border-top:1px solid var(--border)}
+.footer-tag{font-size:.7rem;color:rgba(110,110,133,.5);margin-top:.5rem;font-style:italic}
 
-/* ANIM */
+/* INTRO */
+.intro{position:fixed;inset:0;z-index:999;background:var(--bg);display:flex;
+  flex-direction:column;justify-content:center;align-items:center;text-align:center;
+  padding:2rem;transition:opacity .6s ease,visibility .6s ease}
+.intro.gone{opacity:0;visibility:hidden;pointer-events:none}
+.intro-line{font-family:'JetBrains Mono',monospace;font-size:clamp(.85rem,2vw,1.05rem);
+  color:var(--dim);opacity:0;transform:translateY(10px);line-height:1.8}
+.intro-line.show{opacity:1;transform:translateY(0);transition:all .5s ease}
+.intro-line span{color:var(--cyan)}
+.intro-skip{position:absolute;bottom:2rem;font-family:'JetBrains Mono',monospace;
+  font-size:.65rem;color:rgba(110,110,133,.4);cursor:pointer;transition:color .3s}
+.intro-skip:hover{color:var(--dim)}
+
+/* VIEW COUNTER */
+.views{position:fixed;bottom:1.2rem;right:1.5rem;z-index:50;
+  font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--dim);
+  opacity:.4;display:flex;align-items:center;gap:.4rem;transition:opacity .3s}
+.views:hover{opacity:.8}
+.views-dot{width:5px;height:5px;border-radius:50%;background:var(--cyan);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
+
 .appear{opacity:0;transform:translateY(18px);transition:all .55s cubic-bezier(.25,.46,.45,.94)}
 .appear.show{opacity:1;transform:translateY(0)}
 
@@ -164,40 +174,12 @@ footer{text-align:center;padding:2.5rem;font-family:'JetBrains Mono',monospace;
   .brow{flex-direction:column}
   .tl-item{padding-left:1.2rem}
 }
-
-/* INTRO OVERLAY */
-.intro{position:fixed;inset:0;z-index:999;background:var(--bg);display:flex;
-  flex-direction:column;justify-content:center;align-items:center;text-align:center;
-  padding:2rem;transition:opacity .6s ease,visibility .6s ease}
-.intro.gone{opacity:0;visibility:hidden;pointer-events:none}
-.intro-line{font-family:'JetBrains Mono',monospace;font-size:clamp(.8rem,2vw,1rem);
-  color:var(--dim);opacity:0;transform:translateY(10px);line-height:1.8}
-.intro-line.show{opacity:1;transform:translateY(0);transition:all .5s ease}
-.intro-line span{color:var(--cyan)}
-.intro-line em{color:var(--blue);font-style:normal;font-weight:600}
-.intro-skip{position:absolute;bottom:2rem;font-family:'JetBrains Mono',monospace;
-  font-size:.65rem;color:rgba(110,110,133,.4);cursor:pointer;transition:color .3s}
-.intro-skip:hover{color:var(--dim)}
-
-/* VIEW COUNTER */
-.views{position:fixed;bottom:1.2rem;right:1.5rem;z-index:50;
-  font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--dim);
-  opacity:.4;display:flex;align-items:center;gap:.4rem;transition:opacity .3s}
-.views:hover{opacity:.8}
-.views-dot{width:5px;height:5px;border-radius:50%;background:var(--cyan);
-  animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
-
-/* FOOTER TAGLINE */
-.footer-tag{font-size:.7rem;color:rgba(110,110,133,.5);margin-top:.5rem;font-style:italic}
-
 </style>
 </head>
 <body>
 
 <div class="intro" id="intro">
-
-  <div class="intro-line" id="il3">welcome to <span>Surya's</span> corner of salesforce.</div>
+  <div class="intro-line" id="il1">welcome to <span>surya's</span> corner of salesforce.</div>
   <div class="intro-skip" onclick="document.getElementById('intro').classList.add('gone')">skip →</div>
 </div>
 <div class="views" id="viewCounter"><div class="views-dot"></div><span id="vc">...</span> views</div>
@@ -212,11 +194,12 @@ footer{text-align:center;padding:2.5rem;font-family:'JetBrains Mono',monospace;
     <span class="pill">Apex</span><span class="pill">LWC</span>
     <span class="pill">Aura</span><span class="pill">REST APIs</span>
     <span class="pill">CI/CD</span><span class="pill">Agentforce</span>
+    <span class="pill">Conga CPQ</span><span class="pill">Salesforce CPQ</span>
     <span class="pill">Full Stack</span>
   </div>
   <div class="contact-row">
     <a href="mailto:d4r3d3v1l.asp@gmail.com">d4r3d3v1l.asp@gmail.com</a>
-    <a href="tel:++919032853173">+919032853173</a>
+    <a href="tel:+919032853173">+919032853173</a>
     <span style="color:var(--dim);opacity:.5">hyderabad</span>
   </div>
   <div class="scroll-down">↓ scroll</div>
@@ -252,20 +235,19 @@ footer{text-align:center;padding:2.5rem;font-family:'JetBrains Mono',monospace;
 <section id="proj">
   <div class="stitle"><div class="sdot"></div><span>Projects</span></div>
   <div class="pgrid">
- 
-    <div class="pcard appear"><div class="pbar b"></div><div class="ph"><h3>Setup Automation via Workbook & AI</h3></div><div class="ptags"><span class="pt">Apex</span><span class="pt">LWC</span><span class="pt">REST</span><span class="pt">LLM</span><span class="pt">Metadata API</span></div><div class="psummary">AI-powered Salesforce org setup from spreadsheets.</div><div class="pdetails"><div class="pdetails-inner">Upload an Excel workbook with config, system auto-creates objects, fields, permission sets, layouts, triggers, classes via Metadata API. LLM layer lets users type prompts to generate components. Works with any Salesforce or Conga system.<br><br><strong style="color:#e8c56d">🏆 Hackathon Winner 2024</strong></div></div><div class="pfoot"><span class="tog">[ click to expand ]</span></div></div>
- 
-    <div class="pcard appear"><div class="pbar b"></div><div class="ph"><h3>Spirent Communications</h3></div><div class="ptags"><span class="pt">Apex</span><span class="pt">Triggers</span><span class="pt">LWC</span><span class="pt">VF Pages</span><span class="pt">Email</span></div><div class="psummary">Auto-generates order docs and emails on close.</div><div class="pdetails"><div class="pdetails-inner">Automated order PDF generation and email delivery when orders close. Built trigger-based and on-demand flows. Solo project, handled everything from BD requirements to final delivery.</div></div><div class="pfoot"><span class="tog">[ click to expand ]</span></div></div>
- 
-    <div class="pcard appear"><div class="pbar g"></div><div class="ph"><h3>SaaS Catalog</h3><a class="ax" href="https://appexchange.salesforce.com/appxListingDetail?listingId=a0N3u00000R8KTCEA3" target="_blank">AppExchange ↗</a></div><div class="ptags"><span class="pt">LWC</span><span class="pt">Apex</span><span class="pt">Aura</span></div><div class="psummary">Self-service SaaS quoting with ARR/MRR/TCV.</div><div class="pdetails"><div class="pdetails-inner">Quoting system for recurring products. Supports one-time, recurring, usage pricing. Calculates ARR, MRR, TCV with discount impact. Partners self-serve quotes. Published on AppExchange.</div></div><div class="pfoot"><span class="tog">[ click to expand ]</span></div></div>
- 
-    <div class="pcard appear"><div class="pbar g"></div><div class="ph"><h3>Order Form Generator</h3><a class="ax" href="https://appexchange.salesforce.com/appxListingDetail?listingId=a0N4V00000KlfvcUAB" target="_blank">AppExchange ↗</a></div><div class="ptags"><span class="pt">Apex</span><span class="pt">LWC</span><span class="pt">Aura</span><span class="pt">REST</span><span class="pt">JS</span></div><div class="psummary">PDF, DOCX, Excel generation from Salesforce.</div><div class="pdetails"><div class="pdetails-inner">One-click order document generation in multiple formats directly from Salesforce. Published on AppExchange.</div></div><div class="pfoot"><span class="tog">[ click to expand ]</span></div></div>
- 
-    <div class="pcard appear"><div class="pbar p"></div><div class="ph"><h3>ForPharma App</h3></div><div class="ptags"><span class="pt">React</span><span class="pt">Node.js</span><span class="pt">Heroku</span><span class="pt">PostgreSQL</span><span class="pt">Salesforce</span></div><div class="psummary">Full-stack pharma ops with Salesforce sync.</div><div class="pdetails"><div class="pdetails-inner">Pharma operations app on Heroku. Node.js + PostgreSQL backend, React frontend, real-time Salesforce integration for sales data and workflow management.</div></div><div class="pfoot"><span class="tog">[ click to expand ]</span></div></div>
- 
+
+    <div class="pcard appear"><div class="pbar b"></div><div class="ph"><h3>Setup Automation via Workbook & AI</h3></div><div class="ptags"><span class="pt">Apex</span><span class="pt">LWC</span><span class="pt">REST</span><span class="pt">LLM</span><span class="pt">Metadata API</span></div><div class="psummary">AI-powered Salesforce org setup from spreadsheets.</div><div class="pdetails-wrap"><div class="pdetails"><div class="pdetails-pad">Upload an Excel workbook with config, system auto-creates objects, fields, permission sets, layouts, triggers, classes via Metadata API. LLM layer lets users type prompts to generate components. Works with any Salesforce or Conga system.<br><br><strong style="color:#e8c56d">🏆 Hackathon Winner 2024</strong></div></div></div><div class="pfoot"><span class="tog">[ click to expand ]</span></div></div>
+
+    <div class="pcard appear"><div class="pbar b"></div><div class="ph"><h3>Spirent Communications</h3></div><div class="ptags"><span class="pt">Apex</span><span class="pt">Triggers</span><span class="pt">LWC</span><span class="pt">VF Pages</span><span class="pt">Email</span></div><div class="psummary">Auto-generates order docs and emails on close.</div><div class="pdetails-wrap"><div class="pdetails"><div class="pdetails-pad">Automated order PDF generation and email delivery when orders close. Built trigger-based and on-demand flows. Solo project, handled everything from BD requirements to final delivery.</div></div></div><div class="pfoot"><span class="tog">[ click to expand ]</span></div></div>
+
+    <div class="pcard appear"><div class="pbar g"></div><div class="ph"><h3>SaaS Catalog</h3><a class="ax" href="https://appexchange.salesforce.com/appxListingDetail?listingId=a0N3u00000R8KTCEA3" target="_blank">AppExchange ↗</a></div><div class="ptags"><span class="pt">LWC</span><span class="pt">Apex</span><span class="pt">Aura</span></div><div class="psummary">Self-service SaaS quoting with ARR/MRR/TCV.</div><div class="pdetails-wrap"><div class="pdetails"><div class="pdetails-pad">Quoting system for recurring products. Supports one-time, recurring, usage pricing. Calculates ARR, MRR, TCV with discount impact. Partners self-serve quotes. Published on AppExchange.</div></div></div><div class="pfoot"><span class="tog">[ click to expand ]</span></div></div>
+
+    <div class="pcard appear"><div class="pbar g"></div><div class="ph"><h3>Order Form Generator</h3><a class="ax" href="https://appexchange.salesforce.com/appxListingDetail?listingId=a0N4V00000KlfvcUAB" target="_blank">AppExchange ↗</a></div><div class="ptags"><span class="pt">Apex</span><span class="pt">LWC</span><span class="pt">Aura</span><span class="pt">REST</span><span class="pt">JS</span></div><div class="psummary">PDF, DOCX, Excel generation from Salesforce.</div><div class="pdetails-wrap"><div class="pdetails"><div class="pdetails-pad">One-click order document generation in multiple formats directly from Salesforce. Published on AppExchange.</div></div></div><div class="pfoot"><span class="tog">[ click to expand ]</span></div></div>
+
+    <div class="pcard appear"><div class="pbar p"></div><div class="ph"><h3>ForPharma App</h3></div><div class="ptags"><span class="pt">React</span><span class="pt">Node.js</span><span class="pt">Heroku</span><span class="pt">PostgreSQL</span><span class="pt">Salesforce</span></div><div class="psummary">Full-stack pharma ops with Salesforce sync.</div><div class="pdetails-wrap"><div class="pdetails"><div class="pdetails-pad">Pharma operations app on Heroku. Node.js + PostgreSQL backend, React frontend, real-time Salesforce integration for sales data and workflow management.</div></div></div><div class="pfoot"><span class="tog">[ click to expand ]</span></div></div>
+
   </div>
 </section>
-
 
 <section id="skill">
   <div class="stitle"><div class="sdot"></div><span>Skills</span></div>
@@ -290,18 +272,43 @@ footer{text-align:center;padding:2.5rem;font-family:'JetBrains Mono',monospace;
 const g=document.getElementById('glow');
 document.addEventListener('mousemove',e=>{g.style.left=e.clientX+'px';g.style.top=e.clientY+'px'});
 
+// Scroll reveal
 const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('show');io.unobserve(e.target)}})},{threshold:.15,rootMargin:'0px 0px -40px 0px'});
 document.querySelectorAll('.appear').forEach((el,i)=>{el.style.transitionDelay=i*.04+'s';io.observe(el)});
 
-document.querySelectorAll('.pcard').forEach(c=>{
-  c.addEventListener('click',function(e){
+// Individual card expand with smooth height animation
+document.querySelectorAll('.pcard').forEach(card=>{
+  const wrap=card.querySelector('.pdetails-wrap');
+  const inner=card.querySelector('.pdetails');
+  const tog=card.querySelector('.tog');
+
+  card.addEventListener('click',function(e){
     if(e.target.closest('.ax'))return;
-    document.querySelectorAll('.pcard.open').forEach(o=>{if(o!==this){o.classList.remove('open');o.querySelector('.tog').textContent='[ click to expand ]'}});
-    this.classList.toggle('open');
-    this.querySelector('.tog').textContent=this.classList.contains('open')?'[ click to close ]':'[ click to expand ]';
+
+    if(this.classList.contains('open')){
+      // CLOSE: animate height to 0
+      wrap.style.height=wrap.scrollHeight+'px';
+      requestAnimationFrame(()=>{
+        wrap.style.height='0px';
+      });
+      this.classList.remove('open');
+      tog.textContent='[ click to expand ]';
+    }else{
+      // OPEN: animate height from 0 to content
+      this.classList.add('open');
+      wrap.style.height=inner.scrollHeight+'px';
+      tog.textContent='[ click to close ]';
+      // After animation, set auto so content can reflow
+      const onEnd=()=>{
+        if(this.classList.contains('open'))wrap.style.height='auto';
+        wrap.removeEventListener('transitionend',onEnd);
+      };
+      wrap.addEventListener('transitionend',onEnd);
+    }
   });
 });
 
+// Nav active
 const ss=document.querySelectorAll('section[id]');
 window.addEventListener('scroll',()=>{
   const y=window.scrollY+90;
@@ -309,11 +316,9 @@ window.addEventListener('scroll',()=>{
     if(l){l.classList.toggle('on',y>=s.offsetTop&&y<s.offsetTop+s.offsetHeight)}});
 });
 
-// Intro sequence
-setTimeout(()=>{document.getElementById('il1').classList.add('show')},300);
-setTimeout(()=>{document.getElementById('il2').classList.add('show')},1200);
-setTimeout(()=>{document.getElementById('il3').classList.add('show')},2100);
-setTimeout(()=>{document.getElementById('intro').classList.add('gone')},4200);
+// Intro
+setTimeout(()=>{document.getElementById('il1').classList.add('show')},400);
+setTimeout(()=>{document.getElementById('intro').classList.add('gone')},2800);
 
 // View counter
 (async()=>{
@@ -323,7 +328,6 @@ setTimeout(()=>{document.getElementById('intro').classList.add('gone')},4200);
     document.getElementById('vc').textContent=d.count||'—';
   }catch(e){document.getElementById('viewCounter').style.display='none'}
 })();
-
 </script>
 </body>
 </html>
